@@ -1,10 +1,5 @@
 version: '3.1'
-# Set network
-networks:
-  frontend:
-    ipam:
-      config:
-        - subnet: ${SUBNET_IP}  
+  
 # SERVICES
 services:
 # ------ Configure DB -------
@@ -20,11 +15,8 @@ services:
        - /backupDB:/var/lib/mysql/
     ports:
       - "3306:3306"
-    networks:    
-          frontend:
-             ipv4_address: ${IP_DB}
     deploy:
-      replicas: 2
+      replicas: 1
       update_config:
         parallelism: 1
         delay: 5s
@@ -37,17 +29,16 @@ services:
     image: localhost:5000/petclinic-app:${TAG}
     ports:
       - "8080:8080"
-    networks:
-            frontend:
-                ipv4_address: ${IP_APP}
+    depends_on:
+      - mysql
     environment:
-        - DB_HOST=${IP_DB} 
+        - DB_HOST=mysql 
         - DB_PORT=${DB_PORT} 
         - DB_NAME=${MYSQL_DATABASE}
         - DB_USER=${MYSQL_USER} 
         - DB_PASS=${DB_PASS} 
     deploy:
-      replicas: 2
+      replicas: 1
       update_config:
         parallelism: 1
         delay: 5s
