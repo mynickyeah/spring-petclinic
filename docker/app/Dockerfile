@@ -1,9 +1,11 @@
-FROM maven:3.5-jdk-8-alpine as build
-RUN cd ../../
-RUN echo $(pwd)
+FROM alpine/git as clone
 WORKDIR /app
-COPY . /app
-RUN mvn package
+RUN git clone https://github.com/kerimovkhikmet/spring-petclinic.git
+
+FROM maven:3.5-jdk-8-alpine as build
+WORKDIR /app
+COPY --from=clone /app/spring-petclinic /app
+RUN mvn install
 
 FROM openjdk:8-jre-alpine
 WORKDIR /app
