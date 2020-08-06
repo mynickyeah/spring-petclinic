@@ -4,7 +4,7 @@ version: '3.1'
 services:
 # ------ Configure DB -------
   mysql:
-    image: localhost:5000/petclinic-db:${TAG}
+    image: ${REGISTRY}/petclinic-db:${TAG_DB}
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS}
  #    - MYSQL_ALLOW_EMPTY_PASSWORD=true
@@ -13,8 +13,8 @@ services:
  #    - MYSQL_DATABASE=${DB_NAME}
     volumes:
        - /backupDB:/var/lib/mysql/
-    ports:
-      - "3306:3306"
+#    ports:
+#      - "3306:3306"
     deploy:
       replicas: 1
       update_config:
@@ -23,10 +23,10 @@ services:
       restart_policy:
         condition: on-failure
       placement:
-        constraints: [node.role == manager]
+        constraints: [node.role == worker]
 #  ----------- Configure APP ----------  
   appspring:
-    image: localhost:5000/petclinic-app:${TAG}
+    image: ${REGISTRY}/petclinic-app:${TAG_APP}
     ports:
       - "8080:8080"
     depends_on:
@@ -38,12 +38,12 @@ services:
         - DB_USER=${MYSQL_USER} 
         - DB_PASS=${DB_PASS} 
     deploy:
-      replicas: 1
+      replicas: 2
       update_config:
         parallelism: 1
         delay: 5s
       restart_policy:
         condition: on-failure
       placement:
-        constraints: [node.role == manager]
+        constraints: [node.role == worker]
  

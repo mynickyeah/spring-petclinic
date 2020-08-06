@@ -15,3 +15,5 @@ target/*
 !.vscode/extensions.json
 _site/
 docker/docker_APP/.m2
+docker/dockerswarm/.env
+
