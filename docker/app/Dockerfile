@@ -1,5 +1,6 @@
 FROM maven:3.5-jdk-8-alpine as build
-RUN cd ../../ && echo $(pwd)
+RUN cd ../../
+RUN echo $(pwd)
 WORKDIR /app
 COPY . /app
 RUN mvn package
