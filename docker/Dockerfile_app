@@ -1,0 +1,15 @@
+# syntax=docker/dockerfile:experimental
+
+FROM openjdk:11
+
+COPY ./ ./
+
+RUN --mount=type=cache,target=/root/.m2 ./mvnw -X -Dcheckstyle.skip package
+
+USER $APP_USER 
+
+WORKDIR $APP_DIR
+
+RUN cp ./target/*.jar /$APP_DIR/app.jar
+
+CMD ["java","-jar","./app.jar"]
