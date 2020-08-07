@@ -1,5 +1,5 @@
 FROM maven:3.5-jdk-8-alpine as build
-COPY . /app
+COPY ./ /app
 WORKDIR /app
 RUN mvn package
 
