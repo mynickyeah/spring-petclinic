@@ -5,11 +5,14 @@ services:
   image: registry:2
   ports:
     - 5000:5000
+# Define network for registry
   networks:
       vpcbr:
-        ipv4_address: 10.5.0.6  
+        ipv4_address: 10.5.0.6
+# Bind host dir   
   volumes:
     - /registry_doceker:/var/lib/registry
+# Create network type bridge for remote access
 networks:
   vpcbr:
     driver: bridge
