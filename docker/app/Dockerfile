@@ -6,7 +6,7 @@ RUN --mount=type=cache,target=/root/.m2 mvn package
 
 FROM openjdk:8-jre-alpine
 WORKDIR /app
-ENV appUser = "appuser"
+ENV appUser appuser
 COPY --from=build /app/target/*.jar /app/app.jar
 USER appUser
 EXPOSE 8080
