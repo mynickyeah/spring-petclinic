@@ -1,0 +1,21 @@
+version: "3"
+
+services: 
+  db:
+    build: 
+      context: ${REPO_URL}#${BUILD_BRANCH}
+      dockerfile: ${DB_DF_PATH}:${DB_TAG}
+  app:
+    build: 
+      context: ${REPO_URL}#${BUILD_BRANCH}
+      dockerfile: ${APP_DF_PATH}:${APP_TAG}
+    depends_on: 
+      - db
+    environment:
+      - DB_HOST=${DB_HOST} 
+      - DB_PORT=${DB_PORT} 
+      - DB_NAME=${MYSQL_DATABASE}
+      - DB_USER=${MYSQL_USER} 
+      - DB_PASS=${DB_PASS} 
+
+
