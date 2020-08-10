@@ -1,5 +1,4 @@
-# syntax=docker/dockerfile:experimental
-FROM maven:3.6.1-jdk-11-slim as build
+FROM maven:3.5-jdk-8-alpine as build
 COPY ./pom.xml ./pom.xml
 RUN mvn dependency:go-offline -B
 COPY ./ /app
