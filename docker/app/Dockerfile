@@ -2,7 +2,9 @@
 FROM maven:3.6.1-jdk-11-slim as build
 COPY ./ /app
 WORKDIR /app
-RUN --mount=type=cache,target=/root/.m2 mvn package
+COPY pom.xml /tmp/pom.xml
+RUN mvn -B -f /tmp/pom.xml -s /usr/share/maven/ref/settings-docker.xml dependency:resolve
+RUN mvn package
 
 FROM openjdk:8-jre-alpine
 WORKDIR /app
