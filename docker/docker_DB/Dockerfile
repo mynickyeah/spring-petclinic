@@ -3,10 +3,9 @@
 #---------------------------------------------------------------------------
 
 FROM mysql:latest
-# Setting vars 
-ENV MYSQL_ALLOW_EMPTY_PASSWORD true
-ENV MYSQL_USER petclinic 
-ENV MYSQL_DATABASE petclinic
+# Setting vars  
+ENV MYSQL_USER $DB_USER
+ENV MYSQL_DATABASE $DB_NAME
 
 # Set on run via -e  
 # MYSQL_PASSWORD

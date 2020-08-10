@@ -20,7 +20,7 @@ git clone $URL
 FROM openjdk:8-jdk-alpine as builder
 # COPY src and .m2
 ENV PROJECT_DIR /springapp/spring-petclinic
-RUN mkdir ~/.m2 
+VOLUME /root/.m2 
 COPY .m2  /root/.m2
 # RUN --mount=type=bind,source=/home/vagrant/.m2,target=/root/.m2,rw 
 COPY --from=git /springapp /springapp
