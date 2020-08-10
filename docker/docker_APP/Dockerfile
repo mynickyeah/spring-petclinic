@@ -7,7 +7,6 @@ FROM alpine/git:v2.26.2 as git
 
 # Setting vars
 # Define URL via --build-arg
-ENV PROJECT_DIR /springapp/spring-petclinic
 ARG URL 
 
 # Clone repo
@@ -22,7 +21,6 @@ FROM openjdk:8-jdk-alpine as builder
 ENV PROJECT_DIR /springapp/spring-petclinic
 VOLUME /root/.m2 
 COPY .m2  /root/.m2
-# RUN --mount=type=bind,source=/home/vagrant/.m2,target=/root/.m2,rw 
 COPY --from=git /springapp /springapp
 
 # Build application
