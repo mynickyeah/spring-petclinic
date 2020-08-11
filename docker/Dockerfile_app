@@ -12,4 +12,4 @@ WORKDIR $APP_DIR
 
 RUN cp ./target/*.jar /$APP_DIR/app.jar
 
-CMD ["java","-jar","./app.jar"]
+CMD ["java", "-Dspring.profiles.active=mysql", "-jar","./app.jar"]
