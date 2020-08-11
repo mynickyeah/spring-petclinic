@@ -1,7 +1,7 @@
 # Dockerfile for mysql database container
 #### For building this image, run next command:
 ```bash
-docker build -t ${DB_TAG} ${REPO_URL}\#${BUILD_BRANCH} -f ${DB_DF_PATH} 
+docker build -t ${DB_TAG} ${REPO_URL}#${BUILD_BRANCH} -f ${DB_DF_PATH} 
 ```
 Here ${DB_TAG} is your image tag for database container, ${REPO_URL} - link to github repository, which will be used as context, and ${DB_DF_PATH} specifies path, where your Dockerfile is.
 

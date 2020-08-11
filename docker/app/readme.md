@@ -1,7 +1,7 @@
 # Dockerfile for spring application container
 #### For building this image, run next command:
 ```bash
-docker build -t ${APP_TAG} ${REPO_URL}\#${BUILD_BRANCH} -f ${APP_DF_PATH} 
+docker build -t ${APP_TAG} ${REPO_URL}#${BUILD_BRANCH} -f ${APP_DF_PATH} 
 ```
 Here ${APP_TAG} is your image tag for application container, ${REPO_URL} - link to github repository, which will be used as context, and ${APP_DF_PATH} specifies path, where your Dockerfile is.
 
