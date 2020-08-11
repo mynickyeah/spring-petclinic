@@ -1,11 +1,13 @@
 version: "3"
 
 services:
+# service for mysql database service
   db:
     build:
       context: ${REPO_URL}#${BUILD_BRANCH}
       dockerfile: ${DB_DF_PATH}
     image: mysql:${DB_TAG}
+# service for spring application service
   app:
     build:
       context: ${REPO_URL}#${BUILD_BRANCH}
