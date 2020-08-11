@@ -1,5 +1,7 @@
-# RUN CONTAINER
-# **** By default MYSQL_USER=petclinic, MYSQL_DATABASE=petclinic
+================== RUN CONTAINER =====================
+
+ **** By default MYSQL_USER=$DB_USER, MYSQL_DATABASE=$DB_NAME
+
 docker run \
 -e MYSQL_PASSWORD=$DB_PASS \
 -e MYSQL_ROOT_PASSWORD=$DB_ROOT_PASS \
