@@ -9,6 +9,6 @@ docker run \
 --name DB_CONT \
 --network my-net \
 --ip $IP_DB \
--d petclinic-db:1.1
+-d petclinic-db:tag
 
 

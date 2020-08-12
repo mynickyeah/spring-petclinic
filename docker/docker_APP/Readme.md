@@ -1,10 +1,10 @@
 ====================== BUILD ===========================
 
-DOCKER_BUILDKIT=1 docker build  -t name:tag -f docker/docker_APP/Dockerfile https://github.com/OlehAvramenko/spring-petclinic.git#$build_branch
+DOCKER_BUILDKIT=1 docker build  -t name:tag -f docker/docker_APP/Dockerfile $GIT_URL#$build_branch
 
 ============== BUILD RESERVE DOCKERFILE ================
 
-docker build -t name:tag --build-arg URL=https://github.com/OlehAvramenko/spring-petclinic.git . 
+docker build -t name:tag --build-arg URL=$GIT_URL . 
 
 ================== RUN CONTAINER =======================
 
@@ -16,4 +16,4 @@ docker run -d -p 8080:8080 \
 -e DB_PASS=$DB_PASS \
 --name APP_CONT \
 --network my-net \
-petclinc-app:latest
+petclinc-app:tag
