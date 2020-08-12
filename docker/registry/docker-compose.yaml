@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+# service for mysql database service
+  db:
+    build:
+      context: ${REPO_URL}#${BUILD_BRANCH}
+      dockerfile: ${DB_DF_PATH}
+    image: mysql:${DB_TAG}
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+      - MYSQL_DATABASE=${DB_NAME}
+# service for spring application service
+  app:
+    build:
+      context: ${REPO_URL}#${BUILD_BRANCH}
+      dockerfile: ${APP_DF_PATH}
+    image: spring:${APP_TAG}
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+
+
