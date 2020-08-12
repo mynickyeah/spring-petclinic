@@ -25,14 +25,11 @@ FROM openjdk:8-jre-alpine
 # setting working directory
 WORKDIR /app
 
-# setting environment variable to value for application user
-ENV appUser ${APP_USER}
-
 # copying jar file into new folder, and setting it's name
 COPY --from=build /app/target/*.jar /app/app.jar
 
 # setting the username
-USER appUser
+USER ${APP_USER}
 
 # exposing port 8080
 EXPOSE 8080
