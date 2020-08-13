@@ -7,11 +7,13 @@ services:
     ports:
       -  8080:8080 
     environment:
-      - MYSQL_URL=jdbc:mysql://db/petclinic
-      - MYSQL_PORT=3306
+      - MYSQL_URL=jdbc:mysql://db:3306/petclinic
       - MYSQL_USER=petclinic
       - MYSQL_PASSWORD=petclinic
       - MYSQL_DATABASE=petclinic
+    depends_on:
+      - db
+    command: bash -c "sleep 10 && java -Dspring.profiles.active=mysql -jar ./app.jar"
 
   db:
     image: mysql:5.7
@@ -25,3 +27,4 @@ services:
       - MYSQL_DATABASE=petclinic 
     volumes:
       - ./conf.d:/etc/mysql/conf.d:ro
+      - ./mysql:/var/lib/mysql
