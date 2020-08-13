@@ -32,4 +32,4 @@ COPY --from=BUILD /root/app/target/*.jar /app.jar
 
 EXPOSE 8080
 
-CMD ["/java-runtime/bin/java", "-jar", "/app.jar"]
+CMD ["java", "-jar", "/app.jar"]
