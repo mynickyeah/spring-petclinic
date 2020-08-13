@@ -1,15 +1,19 @@
 # syntax=docker/dockerfile:experimental
 
-FROM openjdk:11
+FROM openjdk:11 as build
 
 COPY ./ ./
 
+WORKDIR $APP_DIR
+
 RUN --mount=type=cache,target=/root/.m2 ./mvnw -X -Dcheckstyle.skip package
+
+FROM openjdk:8u265-jre-slim
 
 USER $APP_USER 
 
 WORKDIR $APP_DIR
 
-RUN cp ./target/*.jar /$APP_DIR/app.jar
+COPY --from=build $APP_DIR/target/*.jar /$APP_DIR/app.jar
 
 CMD ["java", "-Dspring.profiles.active=mysql", "-jar","./app.jar"]

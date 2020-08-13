@@ -1,2 +1,0 @@
-For docker build use: docker build https://github.com/anika-is-here/spring-petclinic.git#{$BUILD_BRANCH} -f ./docker/Dockerfile_app -t petclinic-app
-For docker run use: docker run -p 8080:8080 petclinic-app
