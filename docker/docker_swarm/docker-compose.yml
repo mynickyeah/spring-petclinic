@@ -23,7 +23,7 @@ services:
       restart_policy:
         condition: on-failure
       placement:
-        constraints: [node.role == worker]
+        constraints: [node.labels.type == db]
 #  ----------- Configure APP ----------  
   appspring:
     image: ${REGISTRY}/petclinic-app:${TAG_APP}
@@ -45,5 +45,5 @@ services:
       restart_policy:
         condition: on-failure
       placement:
-        constraints: [node.role == worker]
+        constraints: [node.labels.type == app]
  
