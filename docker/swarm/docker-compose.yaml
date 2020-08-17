@@ -3,7 +3,13 @@ version: "3"
 services:
 # service for mysql database service
   db:
-    image: mysql:5.7
+    build:
+      # using git repo as context
+      context: ${REPO_URL}#${BUILD_BRANCH}
+      # using local project directory as context for tests
+      # context: ${PROJECT_PATH}
+      dockerfile: ${DB_DF_PATH}
+    image: ${LOCAL_REGISTRY}/${DB_TAG}
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_PASS} 
       - MYSQL_ALLOW_EMPTY_PASSWORD=true 
@@ -12,20 +18,22 @@ services:
       - MYSQL_DATABASE=${DB_NAME}
     volumes:
       - /backupDB:/var/lib/mysql/
-    deploy:
-      replicas: 1
-      update_config:
-        parallelism: 1
-        delay: 5s
-      restart_policy:
-        condition: on-failure
+    # deploy:
+    #   replicas: 1
+    #   update_config:
+    #     parallelism: 1
+    #     delay: 5s
+    #   restart_policy:
+    #     condition: on-failure
 # service for spring application service
   app:
     build:
-      # context: ${REPO_URL}#${BUILD_BRANCH}
-      context: ${APP_PATH}
+      # using git repo as context
+      context: ${REPO_URL}#${BUILD_BRANCH}
+      # using local project directory as context for tests
+      # context: ${PROJECT_PATH}
       dockerfile: ${APP_DF_PATH}
-    image: spring:${APP_TAG}
+    image: ${LOCAL_REGISTRY}/${APP_TAG}
     depends_on:
       - db
     ports:
@@ -36,10 +44,10 @@ services:
       - MYSQL_USER=${DB_USER}
       - MYSQL_PASSWORD=${DB_PASS}
       - MYSQL_DATABASE=${DB_NAME}
-    deploy:
-        replicas: 2
-        update_config:
-          parallelism: 1
-          delay: 5s
-        restart_policy:
-          condition: on-failure
+    # deploy:
+    #     replicas: 2
+    #     update_config:
+    #       parallelism: 1
+    #       delay: 5s
+    #     restart_policy:
+    #       condition: on-failure

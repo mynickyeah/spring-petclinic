@@ -2,24 +2,14 @@
 # base build image
 FROM maven:3.5-jdk-8-alpine as build
 
-# # copy the project files
-# COPY ./pom.xml ./pom.xml
-
-# # build all dependencies
-# RUN mvn dependency:go-offline -B
-
 # copying other files
 COPY ./ /app
 
 # setting working directory
 WORKDIR /app
 
-# # building package and running tests
-# RUN mvn package
-
+# building package and running tests using .m2 cache
 RUN --mount=type=cache,target=/root/.m2 mvn -X -Dcheckstyle.skip package
-
-
 
 
 
