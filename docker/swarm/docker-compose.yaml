@@ -3,51 +3,26 @@ version: "3"
 services:
 # service for mysql database service
   db:
-    build:
-      # using git repo as context
-      context: ${REPO_URL}#${BUILD_BRANCH}
-      # using local project directory as context for tests
-      # context: ${PROJECT_PATH}
-      dockerfile: ${DB_DF_PATH}
-    image: ${LOCAL_REGISTRY}/${DB_TAG}
-    environment:
-      - MYSQL_ROOT_PASSWORD=${DB_PASS} 
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true 
-      - MYSQL_USER=${DB_USER}
-      - MYSQL_PASSWORD=${DB_PASS}
-      - MYSQL_DATABASE=${DB_NAME}
+    image: ${LOCAL_REGISTRY}/${DB_IMG_NAME}:${DB_TAG}   
     volumes:
       - /backupDB:/var/lib/mysql/
-    # deploy:
-    #   replicas: 1
-    #   update_config:
-    #     parallelism: 1
-    #     delay: 5s
-    #   restart_policy:
-    #     condition: on-failure
+    deploy:
+      placement:
+        constraints: [node.role == worker]
+
 # service for spring application service
   app:
-    build:
-      # using git repo as context
-      context: ${REPO_URL}#${BUILD_BRANCH}
-      # using local project directory as context for tests
-      # context: ${PROJECT_PATH}
-      dockerfile: ${APP_DF_PATH}
-    image: ${LOCAL_REGISTRY}/${APP_TAG}
+    image: ${LOCAL_REGISTRY}/${APP_IMG_NAME}:${APP_TAG}
     depends_on:
       - db
     ports:
       - "8080:8080"
     environment:
-      - MYSQL_URL=jdbc:mysql://db:${DB_PORT}/petclinic
-      - MYSQL_PORT=3306
+      - MYSQL_URL=jdbc:mysql://db:${DB_PORT}/${DB_NAME}
+      - MYSQL_PORT=${DB_PORT}
       - MYSQL_USER=${DB_USER}
       - MYSQL_PASSWORD=${DB_PASS}
       - MYSQL_DATABASE=${DB_NAME}
-    # deploy:
-    #     replicas: 2
-    #     update_config:
-    #       parallelism: 1
-    #       delay: 5s
-    #     restart_policy:
-    #       condition: on-failure
+    deploy:
+      placement:
+        constraints: [node.role == manager]

@@ -2,7 +2,7 @@
 # base build image
 FROM maven:3.5-jdk-8-alpine as build
 
-# copying other files
+# copying files
 COPY ./ /app
 
 # setting working directory
