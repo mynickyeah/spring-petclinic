@@ -1,4 +1,3 @@
-
 # Dockerfile for spring application container
 #### For pushing images, start local registry:
 ```bash
