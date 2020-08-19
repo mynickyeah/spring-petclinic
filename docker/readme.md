@@ -4,12 +4,14 @@
 
 1) Add an enviromental variables to your host system: 
 
-	*BUILD_BRANCH=build_branch
-	DOCKER_BUILDKIT=1*
+	*BUILD_BRANCH=build_branch*
+	*DOCKER_BUILDKIT=1*
 
-2) Clone the project:
+2) Clone the project and checkout to *$BUILD_BRANCH*:
 
-	```git clone https://github.com/anika-is-here/spring-petclinic -build $BUILD_BRANCH```
+	```git clone https://github.com/anika-is-here/spring-petclinic```
+        
+        ```git checkout $BUILD_BRANCH```
 
 3) Change directory to project directory:
 
@@ -35,3 +37,35 @@
 5) Up containers using docker-compose file:
 
 	```docker-compose -f ./docker/docker-compose.yml up```
+        
+## Running petclinic application in swarm mode
+
+### Steps:
+
+0) Repeat 1-4 steps described in the first part for machine that will be a manager of swarm cluster. Add port forwarding for ports 5000 at manager and 3306 at worker nodes.
+
+1) Assign your machine a manager using:
+
+        ```docker swarm init --advertise-addr $manager_IP```
+        
+        Use the output to join worker nodes. Don't forget to add *$manager_IP* as an environmental variable.
+        
+ 2) Create a network between nodes:
+ 
+        ```docker network create -d overlay mynetwork```
+        
+ 3) Set up insecure docker registry. Add/edit at your worker nodes file */var/lib/docker/daemon.json* with string:
+ 
+        ```{"insecure-registries" : ["$manager_IP:5000"]}```
+        
+        Restart docker and daemon services:
+        
+        ```sudo systemctl daemon-reload```
+        
+        ```sudo systemctl restart docker```
+        
+ 4) Deploy stack:)
+ 
+        ```docker stack deploy -c ./docker/swarm/docker-compose.yml $my_stack_name```
+        
+ P.S. useful for checking: ```docker stack ps --no-trunc $my_stack_name```
