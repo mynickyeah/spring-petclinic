@@ -5,6 +5,7 @@
 1) Add an enviromental variables to your host system: 
 
 	*BUILD_BRANCH=build_branch*
+        
 	*DOCKER_BUILDKIT=1*
 
 2) Clone the project and checkout to *$BUILD_BRANCH*:
