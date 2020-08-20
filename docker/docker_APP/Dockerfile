@@ -9,7 +9,7 @@ FROM openjdk:8-jdk-alpine as builder
 WORKDIR /spring
 # Copy SRC and build application
 COPY . /spring
-COPY docker/docker_APP/application-mysql.properties /spring/src/main/resources/application-mysql.properties
+# COPY docker/docker_APP/application-mysql.properties /spring/src/main/resources/application-mysql.properties
 RUN --mount=type=cache,target=/root/.m2 /spring/mvnw -Dcheckstyle.skip package
 
 # ======= START APP =========
