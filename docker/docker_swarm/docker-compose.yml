@@ -23,7 +23,8 @@ services:
       restart_policy:
         condition: on-failure
       placement:
-        constraints: [node.labels.type == db]
+#        constraints: [node.labels.type == db]
+         constraints: [node.role == manager]
 #  ----------- Configure APP ----------  
   appspring:
     image: ${REGISTRY}/petclinic-app:${TAG_APP}
@@ -32,11 +33,9 @@ services:
     depends_on:
       - mysql
     environment:
-        - DB_HOST=mysql 
-        - DB_PORT=${DB_PORT} 
-        - DB_NAME=${MYSQL_DATABASE}
-        - DB_USER=${MYSQL_USER} 
-        - DB_PASS=${DB_PASS} 
+        - MYSQL_URL=jdbc:mysql://mysql:${DB_PORT}/petclinic  
+        - MYSQL_USER=${MYSQL_USER} 
+        - MYSQL_PAS=${DB_PASS} 
     deploy:
       replicas: 2
       update_config:
@@ -45,5 +44,5 @@ services:
       restart_policy:
         condition: on-failure
       placement:
-        constraints: [node.labels.type == app]
- 
+#        constraints: [node.labels.type == app]
+         constraints: [node.role == manager] 
