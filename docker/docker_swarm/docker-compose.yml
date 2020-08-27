@@ -1,0 +1,48 @@
+version: '3.1'
+  
+# SERVICES
+services:
+# ------ Configure DB -------
+  mysql:
+    image: ${REGISTRY}/petclinic-db:${TAG_DB}
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS}
+ #    - MYSQL_ALLOW_EMPTY_PASSWORD=true
+ #    - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+ #    - MYSQL_DATABASE=${DB_NAME}
+    volumes:
+       - /backupDB:/var/lib/mysql/
+#    ports:
+#      - "3306:3306"
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 5s
+      restart_policy:
+        condition: on-failure
+      placement:
+#        constraints: [node.labels.type == db]
+         constraints: [node.role == manager]
+#  ----------- Configure APP ----------  
+  appspring:
+    image: ${REGISTRY}/petclinic-app:${TAG_APP}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+        - MYSQL_URL=jdbc:mysql://mysql:${DB_PORT}/petclinic  
+        - MYSQL_USER=${MYSQL_USER} 
+        - MYSQL_PAS=${DB_PASS} 
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 5s
+      restart_policy:
+        condition: on-failure
+      placement:
+#        constraints: [node.labels.type == app]
+         constraints: [node.role == manager] 
